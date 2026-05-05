@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import CodeBlock from "@/components/CodeBlock";
 import ImageSlot from "@/components/ImageSlot";
 import Tag from "@/components/Tag";
+import ThemeToggle from "@/components/ThemeToggle";
 import { ArrowLeftIcon, ArrowUpRightIcon, LockIcon } from "@/components/icons";
 import { getProject, visibleProjects } from "@/lib/data";
 
@@ -34,22 +35,36 @@ export default async function ProjectPage({ params }) {
     notFound();
   }
 
+  const caseStudySections = project.caseStudySections ?? [
+    { title: "System Architecture", body: project.sections.architecture },
+    { title: "Development & Iteration Strategy", body: project.sections.iteration },
+  ];
+  const sidebarTitle = project.sidebarTitle ?? "Responsibilities";
+  const sidebarItems = project.sidebarItems ?? project.responsibilities;
+  const galleryTitle = project.projectType === "independent" ? "Interface Previews" : "Architecture & Interface Previews";
+  const snippetHeading = project.projectType === "independent" ? "Core Logic" : "Implementation Snippet";
+  const snippetDescription =
+    project.projectType === "independent"
+      ? "Selected implementation detail showing the core data flow."
+      : "Selected implementation detail from the project work.";
+
   return (
     <main className="min-h-screen px-6 py-10 pb-20 sm:py-12">
       <div className="mx-auto max-w-5xl space-y-12">
-        <nav>
-          <Link href="/" className="focus-ring inline-flex items-center gap-2 rounded-md text-sm text-zinc-400 transition-colors hover:text-white">
+        <nav className="flex items-center justify-between gap-4">
+          <Link href="/" className="focus-ring inline-flex items-center gap-2 rounded-md text-sm text-muted transition-colors hover:text-primary">
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Home
           </Link>
+          <ThemeToggle />
         </nav>
 
         <header className="space-y-6">
           <div className="space-y-3">
-            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">{project.title}</h1>
-            <p className="text-lg leading-8 text-zinc-400">
+            <h1 className="text-3xl font-semibold tracking-tight text-primary sm:text-5xl">{project.title}</h1>
+            <p className="text-lg leading-8 text-secondary">
               {project.role}
-              {project.organization ? <span className="text-zinc-600"> / {project.organization}</span> : null}
+              {project.organization ? <span className="text-faint"> / {project.organization}</span> : null}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -67,28 +82,21 @@ export default async function ProjectPage({ params }) {
 
         <article className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
           <div className="space-y-9 md:col-span-2">
-            <section className="space-y-4">
-              <h2 className="text-xl font-medium text-white">System Architecture</h2>
-              {project.sections.architecture.map((paragraph) => (
-                <p key={paragraph} className="leading-7 text-zinc-400">
-                  {paragraph}
-                </p>
-              ))}
-            </section>
-
-            <section className="space-y-4">
-              <h2 className="text-xl font-medium text-white">Development & Iteration Strategy</h2>
-              {project.sections.iteration.map((paragraph) => (
-                <p key={paragraph} className="leading-7 text-zinc-400">
-                  {paragraph}
-                </p>
-              ))}
-            </section>
+            {caseStudySections.map((section) => (
+              <section key={section.title} className="space-y-4">
+                <h2 className="text-xl font-medium text-primary">{section.title}</h2>
+                {section.body.map((paragraph) => (
+                  <p key={paragraph} className="leading-7 text-secondary">
+                    {paragraph}
+                  </p>
+                ))}
+              </section>
+            ))}
 
             <section className="space-y-4">
               <div>
-                <h2 className="text-xl font-medium text-white">Implementation Snippet</h2>
-                <p className="mt-2 text-sm leading-6 text-zinc-500">Selected implementation detail from the project work.</p>
+                <h2 className="text-xl font-medium text-primary">{snippetHeading}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted">{snippetDescription}</p>
               </div>
               <CodeBlock title={project.snippetTitle} code={project.snippet} />
             </section>
@@ -96,19 +104,33 @@ export default async function ProjectPage({ params }) {
 
           <aside className="space-y-6">
             <section className="glass-panel rounded-lg p-5">
-              <h2 className="text-sm font-medium uppercase tracking-wider text-white">Responsibilities</h2>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-zinc-400">
-                {project.responsibilities.map((item) => (
+              <h2 className="text-sm font-medium uppercase tracking-wider text-primary">{sidebarTitle}</h2>
+              <ul className="mt-4 space-y-3 text-sm leading-6 text-secondary">
+                {sidebarItems.map((item) => (
                   <li key={item} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400 dark:bg-blue-400" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </section>
 
+            {project.secondarySidebarItems?.length ? (
+              <section className="glass-panel rounded-lg p-5">
+                <h2 className="text-sm font-medium uppercase tracking-wider text-primary">{project.secondarySidebarTitle}</h2>
+                <ul className="mt-4 space-y-3 text-sm leading-6 text-secondary">
+                  {project.secondarySidebarItems.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400 dark:bg-blue-400" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
             <section className="glass-panel rounded-lg p-5">
-              <h2 className="text-sm font-medium uppercase tracking-wider text-white">Links</h2>
+              <h2 className="text-sm font-medium uppercase tracking-wider text-primary">Links</h2>
               <div className="mt-4 flex flex-col gap-3 text-sm">
                 {project.links.length ? (
                   project.links.map((link) =>
@@ -118,7 +140,7 @@ export default async function ProjectPage({ params }) {
                         href={link.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="focus-ring inline-flex items-center justify-between gap-3 rounded-md text-zinc-400 transition-colors hover:text-white"
+                        className="focus-ring inline-flex items-center justify-between gap-3 rounded-md text-secondary transition-colors hover:text-primary"
                       >
                         {link.label}
                         <ArrowUpRightIcon className="h-4 w-4" />
@@ -127,7 +149,7 @@ export default async function ProjectPage({ params }) {
                       <span
                         key={link.label}
                         title={link.disabledReason}
-                        className="inline-flex cursor-not-allowed items-center justify-between gap-3 rounded-md text-zinc-600"
+                        className="inline-flex cursor-not-allowed items-center justify-between gap-3 rounded-md text-disabled"
                         aria-disabled="true"
                       >
                         {link.label}
@@ -136,15 +158,15 @@ export default async function ProjectPage({ params }) {
                     )
                   )
                 ) : (
-                  <p className="text-zinc-600">No public links available.</p>
+                  <p className="text-disabled">No public links available.</p>
                 )}
               </div>
             </section>
 
             {project.assetNotes?.length ? (
               <section className="glass-panel rounded-lg p-5">
-                <h2 className="text-sm font-medium uppercase tracking-wider text-white">Asset Placement</h2>
-                <ul className="mt-4 space-y-3 font-mono text-xs leading-5 text-zinc-500">
+                <h2 className="text-sm font-medium uppercase tracking-wider text-primary">Asset Placement</h2>
+                <ul className="mt-4 space-y-3 font-mono text-xs leading-5 text-muted">
                   {project.assetNotes.map((note) => (
                     <li key={note} className="break-words">
                       {note}
@@ -157,8 +179,8 @@ export default async function ProjectPage({ params }) {
         </article>
 
         <section className="space-y-4 pt-2" aria-labelledby="gallery-heading">
-          <h2 id="gallery-heading" className="text-xl font-medium text-white">
-            Architecture & Interface Previews
+          <h2 id="gallery-heading" className="text-xl font-medium text-primary">
+            {galleryTitle}
           </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {project.gallery.map((item) => (
