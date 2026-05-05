@@ -8,10 +8,7 @@ export default function HomePage() {
     <main className="min-h-screen px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl space-y-24">
         <header className="space-y-6">
-          <div className="flex items-start justify-between gap-4">
-            {/* <p className="font-mono text-sm text-faint">{profile.status}</p> */}
-            <ThemeToggle />
-          </div>
+          {/* <p className="font-mono text-sm text-faint">{profile.status}</p> */}
           <div className="space-y-4">
             <h1 className="text-4xl font-semibold tracking-tight text-primary sm:text-5xl">{profile.name}</h1>
             <p className="max-w-2xl text-lg leading-8 text-secondary">{profile.summary}</p>
@@ -71,6 +68,10 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        <footer className="flex justify-center pt-2">
+          <ThemeToggle />
+        </footer>
       </div>
     </main>
   );

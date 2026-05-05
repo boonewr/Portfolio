@@ -43,28 +43,25 @@ export default async function ProjectPage({ params }) {
   const sidebarItems = project.sidebarItems ?? project.responsibilities;
   const galleryTitle = project.projectType === "independent" ? "Interface Previews" : "Architecture & Interface Previews";
   const snippetHeading = project.projectType === "independent" ? "Core Logic" : "Implementation Snippet";
-  const snippetDescription =
-    project.projectType === "independent"
-      ? "Selected implementation detail showing the core data flow."
-      : "Selected implementation detail from the project work.";
+  const snippetDescription = project.snippetSummary ?? "Highlighted implementation detail from the project.";
+  const headerRole = project.roleLabel ?? project.role;
 
   return (
     <main className="min-h-screen px-6 py-10 pb-20 sm:py-12">
       <div className="mx-auto max-w-5xl space-y-12">
-        <nav className="flex items-center justify-between gap-4">
+        <nav>
           <Link href="/" className="focus-ring inline-flex items-center gap-2 rounded-md text-sm text-muted transition-colors hover:text-primary">
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Home
           </Link>
-          <ThemeToggle />
         </nav>
 
         <header className="space-y-6">
           <div className="space-y-3">
             <h1 className="text-3xl font-semibold tracking-tight text-primary sm:text-5xl">{project.title}</h1>
             <p className="text-lg leading-8 text-secondary">
-              {project.role}
-              {project.organization ? <span className="text-faint"> / {project.organization}</span> : null}
+              {project.headerDescription ?? project.summary}
+              <span className="text-faint"> / {headerRole}</span>
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -163,18 +160,6 @@ export default async function ProjectPage({ params }) {
               </div>
             </section>
 
-            {project.assetNotes?.length ? (
-              <section className="glass-panel rounded-lg p-5">
-                <h2 className="text-sm font-medium uppercase tracking-wider text-primary">Asset Placement</h2>
-                <ul className="mt-4 space-y-3 font-mono text-xs leading-5 text-muted">
-                  {project.assetNotes.map((note) => (
-                    <li key={note} className="break-words">
-                      {note}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ) : null}
           </aside>
         </article>
 
@@ -190,6 +175,10 @@ export default async function ProjectPage({ params }) {
             ))}
           </div>
         </section>
+
+        <footer className="flex justify-center pt-2">
+          <ThemeToggle />
+        </footer>
       </div>
     </main>
   );
