@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">RouteForecaster architecture preview</title>
+  <desc id="desc">A stylized system architecture diagram for the frontend, backend, database, and external services.</desc>
+  <rect width="1200" height="675" fill="#f8fafc"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <g font-family="Inter, Arial, sans-serif">
+    <g fill="#ffffff" stroke="#dbe3ef" stroke-width="3">
+      <rect x="74" y="232" width="230" height="150" rx="18"/>
+      <rect x="484" y="104" width="240" height="150" rx="18"/>
+      <rect x="484" y="420" width="240" height="150" rx="18"/>
+      <rect x="894" y="78" width="232" height="120" rx="18"/>
+      <rect x="894" y="278" width="232" height="120" rx="18"/>
+      <rect x="894" y="478" width="232" height="120" rx="18"/>
+    </g>
+    <g fill="#0f172a" font-size="27" font-weight="700">
+      <text x="116" y="292">Vite React</text>
+      <text x="526" y="164">FastAPI</text>
+      <text x="536" y="480">Postgres</text>
+      <text x="936" y="128">Google Routes</text>
+      <text x="936" y="328">Open-Meteo</text>
+      <text x="936" y="528">Redis KV</text>
+    </g>
+    <g fill="#64748b" font-size="18">
+      <text x="116" y="333">Planner, map, HUD</text>
+      <text x="526" y="205">Route-weather API</text>
+      <text x="536" y="521">Users, saved routes</text>
+      <text x="936" y="166">Route geometry</text>
+      <text x="936" y="366">Waypoint forecasts</text>
+      <text x="936" y="566">Rate limits</text>
+    </g>
+  </g>
+  <g fill="none" stroke="#64748b" stroke-width="5" marker-end="url(#arrow)">
+    <path d="M304 286 C384 240 404 194 482 178"/>
+    <path d="M304 330 C386 383 410 462 482 494"/>
+    <path d="M724 180 C790 158 824 140 892 138"/>
+    <path d="M724 198 C800 248 823 316 892 338"/>
+    <path d="M724 224 C794 326 812 494 892 538"/>
+  </g>
+</svg>

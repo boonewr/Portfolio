@@ -45,6 +45,7 @@ export default async function ProjectPage({ params }) {
   const snippetHeading = project.projectType === "independent" ? "Core Logic" : "Implementation Snippet";
   const snippetDescription = project.snippetSummary ?? "Highlighted implementation detail from the project.";
   const headerRole = project.roleLabel ?? project.role;
+  const showSnippet = project.hideSnippet !== true && project.snippet && project.snippetTitle;
 
   return (
     <main className="min-h-screen px-6 py-10 pb-20 sm:py-12">
@@ -90,13 +91,15 @@ export default async function ProjectPage({ params }) {
               </section>
             ))}
 
-            <section className="space-y-4">
-              <div>
-                <h2 className="text-xl font-medium text-primary">{snippetHeading}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted">{snippetDescription}</p>
-              </div>
-              <CodeBlock title={project.snippetTitle} code={project.snippet} />
-            </section>
+            {showSnippet ? (
+              <section className="space-y-4">
+                <div>
+                  <h2 className="text-xl font-medium text-primary">{snippetHeading}</h2>
+                  <p className="mt-2 text-sm leading-6 text-muted">{snippetDescription}</p>
+                </div>
+                <CodeBlock title={project.snippetTitle} code={project.snippet} />
+              </section>
+            ) : null}
           </div>
 
           <aside className="space-y-6">
