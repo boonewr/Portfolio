@@ -4,14 +4,14 @@ import { useSyncExternalStore } from "react";
 import { MoonIcon, SunIcon } from "@/components/icons";
 
 function getPreferredTheme() {
-  if (typeof window === "undefined") return "dark";
+  if (typeof window === "undefined") return "light";
   const stored = window.localStorage.getItem("theme");
 
   if (stored === "light" || stored === "dark") {
     return stored;
   }
 
-  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  return "light";
 }
 
 function applyTheme(theme) {
@@ -21,33 +21,23 @@ function applyTheme(theme) {
 }
 
 function getThemeSnapshot() {
-  if (typeof document === "undefined") return "dark";
+  if (typeof document === "undefined") return "light";
   return document.documentElement.classList.contains("light") ? "light" : "dark";
 }
 
 function subscribeToTheme(callback) {
-  const media = window.matchMedia("(prefers-color-scheme: light)");
-  const handleSystemTheme = () => {
-    if (!window.localStorage.getItem("theme")) {
-      applyTheme(getPreferredTheme());
-      callback();
-    }
-  };
-
   applyTheme(getPreferredTheme());
   window.addEventListener("themechange", callback);
   window.addEventListener("storage", callback);
-  media.addEventListener("change", handleSystemTheme);
 
   return () => {
     window.removeEventListener("themechange", callback);
     window.removeEventListener("storage", callback);
-    media.removeEventListener("change", handleSystemTheme);
   };
 }
 
 export default function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, () => "dark");
+  const theme = useSyncExternalStore(subscribeToTheme, getThemeSnapshot, () => "light");
   const nextTheme = theme === "dark" ? "light" : "dark";
 
   return (
