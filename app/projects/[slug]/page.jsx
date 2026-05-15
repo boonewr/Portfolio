@@ -1,10 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import CodeBlock from "@/components/CodeBlock";
 import ImageSlot from "@/components/ImageSlot";
 import Tag from "@/components/Tag";
 import ThemeToggle from "@/components/ThemeToggle";
-import { ArrowLeftIcon, ArrowUpRightIcon, LockIcon } from "@/components/icons";
+import { ArrowLeftIcon, ArrowUpRightIcon, LockIcon, PlayIcon } from "@/components/icons";
 import { getProject, visibleProjects } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -165,6 +166,55 @@ export default async function ProjectPage({ params }) {
 
           </aside>
         </article>
+
+        {project.demoVideos?.length ? (
+          <section className="space-y-4 pt-2" aria-labelledby="demo-videos-heading">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 id="demo-videos-heading" className="text-xl font-medium text-primary">
+                  Demo Videos
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+                  Public walkthroughs are available in place of a public repository.
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {project.demoVideos.map((video) => (
+                <a
+                  key={video.href}
+                  href={video.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass-panel focus-ring group block overflow-hidden rounded-lg p-2 transition duration-300 hover:bg-white/70 dark:hover:border-white/15 dark:hover:bg-white/[0.055]"
+                >
+                  <div className="bg-theme-slot border-theme-slot relative aspect-video overflow-hidden rounded-md border">
+                    <Image
+                      src={video.thumbnail}
+                      alt={video.alt}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                    <span className="absolute left-1/2 top-1/2 inline-flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-blue-500 shadow-lg transition duration-300 group-hover:scale-105 group-hover:bg-white">
+                      <PlayIcon className="h-5 w-5 translate-x-0.5" />
+                    </span>
+                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white">
+                      Watch on YouTube
+                      <ArrowUpRightIcon className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                  <div className="space-y-2 p-3">
+                    <h3 className="text-base font-medium text-primary">{video.title}</h3>
+                    <p className="text-sm leading-6 text-secondary">{video.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="space-y-4 pt-2" aria-labelledby="gallery-heading">
           <h2 id="gallery-heading" className="text-xl font-medium text-primary">
